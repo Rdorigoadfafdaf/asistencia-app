@@ -6,10 +6,42 @@ import pytz
 
 # 🔹 Conexión con Google Sheets usando Secrets
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-creds_dict = st.secrets["google_credentials"]  # ya es un diccionario
+creds_dict = st.secrets["google_credentials"]
 creds = ServiceAccountCredentials.from_json_keyfile_dict(dict(creds_dict), scope)
 client = gspread.authorize(creds)
-sheet = client.open("Asistencia").sheet1  # usa el nombre exacto de tu Google Sheet
+
+# Hojas
+sheet_asistencia = client.open("Asistencia").worksheet("Asistencia")  # donde se registran asistencias
+sheet_usuarios = client.open("Asistencia").worksheet("Usuarios")      # datos de usuarios
+
+# Obtener usuarios
+usuarios = sheet_usuarios.get_all_records()
+nombres = [u["Nombre"] for u in usuarios]
+
+# 🔹 Interfaz
+st.set_page_config(page_title="Registro de Asistencia", page_icon="📋", layout="centered")
+st.title("📋 Registro de Asistencia")
+
+# Selección de nombre
+nombre = st.selectbox("👤 Selecciona tu nombre", nombres)
+
+# Mostrar datos del usuario automáticamente
+usuario = next((u for u in usuarios if u["Nombre"] == nombre), None)
+if usuario:
+    st.write(f"**Puesto:** {usuario['Puesto']}")
+    st.write(f"**Área:** {usuario['Área']}")
+    st.image(usuario["Foto"], width=150)
+
+# Selección de tipo de registro
+tipo = st.selectbox("🕒 Tipo de registro", ["Ingreso", "Salida"])
+
+# Botón registrar
+if st.button("✅ Registrar asistencia"):
+    tz = pytz.timezone("America/Lima")
+    fecha = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
+    sheet_asistencia.append_row([nombre, usuario["Puesto"], usuario["Área"], tipo, fecha])
+    st.success(f"Asistencia registrada para {nombre} - {tipo} a las {fecha}")
+
 
 # 🔹 Configuración de la página
 st.set_page_config(page_title="Registro de Asistencia", page_icon="📋", layout="centered")
@@ -44,6 +76,7 @@ if st.button("✅ Registrar asistencia"):
         st.success(f"Asistencia registrada para {nombre} - {tipo} a las {fecha}")
     else:
         st.error("⚠️ Debes ingresar un nombre")
+
 
 
 
