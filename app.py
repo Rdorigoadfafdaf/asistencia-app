@@ -134,10 +134,11 @@ button_html = """
 </style>
 
 <form action="#" method="post">
-    <button class="register-btn" type="submit">✅ Registrar</button>
+    <button class="register-btn" type="submit">Registrar</button>
 </form>
 """
 st.markdown(button_html, unsafe_allow_html=True)
+
 
 
 
