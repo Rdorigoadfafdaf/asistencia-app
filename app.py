@@ -3,16 +3,6 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
 import pytz
-# Creamos una lista con un valor inicial vacío
-opciones_nombre = ["Selecciona un nombre..."] + nombres
-
-st.markdown("**Selecciona tu nombre**", unsafe_allow_html=True)
-nombre = st.selectbox(
-    "", 
-    opciones_nombre, 
-    key="nombre", 
-    label_visibility="collapsed"
-)
 
 # Solo buscamos datos si no está en el placeholder
 usuario = None
@@ -33,6 +23,67 @@ sheet_usuarios = sheet.worksheet("Usuarios")       # pestaña con datos de usuar
 # Obtener usuarios
 usuarios = sheet_usuarios.get_all_records()
 nombres = [u["Nombre"] for u in usuarios]
+# --- Lista con placeholder ---
+opciones_nombre = ["Selecciona un nombre..."] + nombres
+opciones_tipo = ["Selecciona tipo de registro..."] + ["Ingreso", "Salida"]
+
+# Campo: Selección de nombre con foto al costado
+col1, col2 = st.columns([3, 1])
+
+with col1:
+    st.markdown("**Selecciona tu nombre**", unsafe_allow_html=True)
+    nombre = st.selectbox(
+        "",
+        opciones_nombre,
+        key="nombre",
+        label_visibility="collapsed"
+    )
+
+with col2:
+    usuario = None
+    if nombre != "Selecciona un nombre...":
+        usuario = next((u for u in usuarios if u["Nombre"] == nombre), None)
+        if usuario and usuario.get("Foto"):
+            st.image(usuario["Foto"], width=100)
+
+# Mostrar Puesto y Área debajo (solo si se eligió nombre válido)
+if usuario:
+    st.markdown("**Puesto**", unsafe_allow_html=True)
+    st.markdown(f"""
+    <div style="
+        background-color:#1c1c1c; 
+        padding:10px; 
+        border-radius:8px; 
+        margin-bottom:10px;
+        font-size:16px; 
+        color:white;
+    ">
+        {usuario.get('Puesto', 'No definido')}
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("**Área**", unsafe_allow_html=True)
+    st.markdown(f"""
+    <div style="
+        background-color:#1c1c1c; 
+        padding:10px; 
+        border-radius:8px; 
+        margin-bottom:10px;
+        font-size:16px; 
+        color:white;
+    ">
+        {usuario.get('Área', usuario.get('Area', 'No definido'))}
+    </div>
+    """, unsafe_allow_html=True)
+
+# Campo: Selección de tipo de registro con placeholder
+st.markdown("**Tipo de registro**", unsafe_allow_html=True)
+tipo = st.selectbox(
+    "",
+    opciones_tipo,
+    key="tipo_registro",
+    label_visibility="collapsed"
+)
 
 # 🔹 Configuración de la página
 st.set_page_config(page_title="Registro de Asistencia", page_icon="📋", layout="centered")
@@ -156,6 +207,7 @@ button_html = """
 </form>
 """
 st.markdown(button_html, unsafe_allow_html=True)
+
 
 
 
