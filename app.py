@@ -52,6 +52,8 @@ st.markdown(f"""
   <label style="font-size:13px; color: #ccc;">Selecciona tu nombre</label>
 </div>
 """, unsafe_allow_html=True)
+
+# El selectbox queda pegado debajo del label
 nombre = st.selectbox("", nombres, key="nombre")
 
 # Buscar datos del usuario seleccionado
@@ -98,8 +100,8 @@ st.markdown(f"""
   <label style="font-size:13px; color: #ccc;">Tipo de registro</label>
 </div>
 """, unsafe_allow_html=True)
-tipo = st.selectbox("", ["Ingreso", "Salida"], key="tipo_registro")
 
+tipo = st.selectbox("", ["Ingreso", "Salida"], key="tipo_registro")
 # Emoji dinámico según tipo
 emoji = "✅" if tipo == "Ingreso" else "❌"
 
@@ -115,6 +117,7 @@ if st.button(f"{emoji} Registrar {tipo}", key="btn_registro"):
         fecha
     ])
     st.success(f"Asistencia registrada para {nombre} - {tipo} a las {fecha}")
+
 
 
 
