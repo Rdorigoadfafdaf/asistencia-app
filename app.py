@@ -3,6 +3,21 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
 import pytz
+# Creamos una lista con un valor inicial vacío
+opciones_nombre = ["Selecciona un nombre..."] + nombres
+
+st.markdown("**Selecciona tu nombre**", unsafe_allow_html=True)
+nombre = st.selectbox(
+    "", 
+    opciones_nombre, 
+    key="nombre", 
+    label_visibility="collapsed"
+)
+
+# Solo buscamos datos si no está en el placeholder
+usuario = None
+if nombre != "Selecciona un nombre...":
+    usuario = next((u for u in usuarios if u["Nombre"] == nombre), None)
 
 # 🔹 Conexión con Google Sheets usando Secrets
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
@@ -141,6 +156,7 @@ button_html = """
 </form>
 """
 st.markdown(button_html, unsafe_allow_html=True)
+
 
 
 
