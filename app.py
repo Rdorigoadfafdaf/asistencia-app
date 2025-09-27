@@ -63,21 +63,11 @@ nombre = st.selectbox("Selecciona tu nombre", nombres, key="nombre", label_visib
 # Buscar datos del usuario seleccionado
 usuario = next((u for u in usuarios if u["Nombre"] == nombre), None)
 if usuario:
-    # Recuadro para Puesto
-    st.markdown(f"""
-    <div class="block">
-      <label>Puesto</label><br>
-      <span>{usuario.get('Puesto', 'No definido')}</span>
-    </div>
-    """, unsafe_allow_html=True)
+   # Campo: Puesto (mismo formato que Nombre y Tipo)
+st.text_input("Puesto", usuario.get("Puesto", "No definido"), key="puesto", disabled=True)
 
-    # Recuadro para Área
-    st.markdown(f"""
-    <div class="block">
-      <label>Área</label><br>
-      <span>{usuario.get('Área', usuario.get('Area', 'No definido'))}</span>
-    </div>
-    """, unsafe_allow_html=True)
+# Campo: Área (mismo formato que Nombre y Tipo)
+st.text_input("Área", usuario.get("Área", usuario.get("Area", "No definido")), key="area", disabled=True)
 
     # Foto del usuario (si existe en la hoja)
     if usuario.get("Foto"):
@@ -101,6 +91,7 @@ if st.button(f"{emoji} Registrar {tipo}", key="btn_registro"):
         fecha
     ])
     st.success(f"Asistencia registrada para {nombre} - {tipo} a las {fecha}")
+
 
 
 
