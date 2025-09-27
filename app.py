@@ -113,18 +113,33 @@ tipo = st.selectbox("", ["Ingreso", "Salida"], key="tipo_registro", label_visibi
 # Emoji dinámico según tipo
 emoji = "✅" if tipo == "Ingreso" else "❌"
 
-# Botón registrar
-if st.button(f"{emoji} Registrar {tipo}", key="btn_registro"):
-    tz = pytz.timezone("America/Lima")
-    fecha = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
-    sheet_asistencia.append_row([
-        nombre,
-        usuario.get("Puesto", ""),
-        usuario.get("Área", usuario.get("Area", "")),
-        tipo,
-        fecha
-    ])
-    st.success(f"Asistencia registrada para {nombre} - {tipo} a las {fecha}")
+# Botón Registrar (verde fijo con estilo)
+button_html = """
+<style>
+.register-btn {
+    background-color: #28a745; /* verde tipo Bootstrap */
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+}
+.register-btn:hover {
+    background-color: #218838; /* verde más oscuro al pasar el mouse */
+}
+</style>
+
+<form action="#" method="post">
+    <button class="register-btn" type="submit">✅ Registrar</button>
+</form>
+"""
+st.markdown(button_html, unsafe_allow_html=True)
+
+
 
 
 
