@@ -13,10 +13,10 @@ sheet = client.open("Asistencia").sheet1  # usa el nombre exacto de tu Google Sh
 
 # 🔹 Configuración de la página
 st.set_page_config(page_title="Registro de Asistencia", page_icon="📋", layout="centered")
-# 🔹 Fondo personalizado con tu foto de Imgur
+# 🔹 Fondo con efecto difuminado (blur)
 page_bg_img = """
 <style>
-[data-testid="stAppViewContainer"] {
+[data-testid="stAppViewContainer"]::before {
     content: "";
     position: fixed;
     top: 0;
@@ -27,15 +27,15 @@ page_bg_img = """
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    filter: blur(6px) brightness(0.7); /* difumina + oscurece un poco */
+    z-index: -1;
 }
 [data-testid="stHeader"] {
-    background: rgba(0,0,0,0);  /* header transparente */
+    background: rgba(0,0,0,0);
 }
 </style>
 """
 st.markdown(page_bg_img, unsafe_allow_html=True)
-
-
 # 🔹 Interfaz
 st.title("📋 Registro de Asistencia")
 
@@ -51,6 +51,7 @@ if st.button("✅ Registrar asistencia"):
         st.success(f"Asistencia registrada para {nombre} - {tipo} a las {fecha}")
     else:
         st.error("⚠️ Debes ingresar un nombre")
+
 
 
 
