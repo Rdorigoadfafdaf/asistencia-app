@@ -47,8 +47,32 @@ nombre = st.selectbox("👤 Selecciona tu nombre", nombres, key="nombre")
 # Buscar datos del usuario
 usuario = next((u for u in usuarios if u["Nombre"] == nombre), None)
 if usuario:
-    st.write(f"**Puesto:** {usuario.get('Puesto', 'No definido')}")
-    st.write(f"**Área:** {usuario.get('Área', usuario.get('Area', 'No definido'))}")
+   # Mostrar Puesto en un recuadro
+st.markdown(f"""
+<div style="
+    background-color:#1c1c1c; 
+    padding:10px; 
+    border-radius:8px; 
+    margin-bottom:10px;
+">
+  <label style="font-size:13px; color: #ccc;">Puesto</label><br>
+  <span style="font-size:16px; color:white;">{usuario.get('Puesto', 'No definido')}</span>
+</div>
+""", unsafe_allow_html=True)
+
+# Mostrar Área en un recuadro
+st.markdown(f"""
+<div style="
+    background-color:#1c1c1c; 
+    padding:10px; 
+    border-radius:8px; 
+    margin-bottom:10px;
+">
+  <label style="font-size:13px; color: #ccc;">Área</label><br>
+  <span style="font-size:16px; color:white;">{usuario.get('Área', usuario.get('Area', 'No definido'))}</span>
+</div>
+""", unsafe_allow_html=True)
+
     if usuario.get("Foto"):
         st.image(usuario["Foto"], width=150)
 
@@ -67,6 +91,7 @@ if st.button(f"✅ Registrar {tipo}", key="btn_registro"):
         fecha
     ])
     st.success(f"Asistencia registrada para {nombre} - {tipo} a las {fecha}")
+
 
 
 
