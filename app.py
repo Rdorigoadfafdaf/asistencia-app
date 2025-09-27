@@ -34,6 +34,22 @@ page_bg_img = """
 [data-testid="stHeader"] {
     background: rgba(0,0,0,0);
 }
+
+/* 🔹 Estilos globales para bloques de datos */
+.block {
+    background-color:#1c1c1c;
+    padding:10px;
+    border-radius:8px;
+    margin-bottom:10px;
+}
+.block label {
+    font-size:13px;
+    color:#ccc;
+}
+.block span {
+    font-size:16px;
+    color:white;
+}
 </style>
 """
 st.markdown(page_bg_img, unsafe_allow_html=True)
@@ -42,66 +58,36 @@ st.markdown(page_bg_img, unsafe_allow_html=True)
 st.title("📋 Registro de Asistencia")
 
 # Campo: Selección de nombre
-st.markdown(f"""
-<div style="
-    background-color:#1c1c1c; 
-    padding:10px; 
-    border-radius:8px; 
-    margin-bottom:10px;
-">
-  <label style="font-size:13px; color: #ccc;">Selecciona tu nombre</label>
-</div>
-""", unsafe_allow_html=True)
-
-# El selectbox queda pegado debajo del label
-nombre = st.selectbox("", nombres, key="nombre")
+st.markdown('<div class="block"><label>Selecciona tu nombre</label></div>', unsafe_allow_html=True)
+nombre = st.selectbox("", nombres, key="nombre", label_visibility="collapsed")
 
 # Buscar datos del usuario seleccionado
 usuario = next((u for u in usuarios if u["Nombre"] == nombre), None)
 if usuario:
     # Recuadro para Puesto
     st.markdown(f"""
-    <div style="
-        background-color:#1c1c1c; 
-        padding:10px; 
-        border-radius:8px; 
-        margin-bottom:10px;
-    ">
-      <label style="font-size:13px; color: #ccc;">Puesto</label><br>
-      <span style="font-size:16px; color:white;">{usuario.get('Puesto', 'No definido')}</span>
+    <div class="block">
+      <label>Puesto</label><br>
+      <span>{usuario.get('Puesto', 'No definido')}</span>
     </div>
     """, unsafe_allow_html=True)
 
     # Recuadro para Área
     st.markdown(f"""
-    <div style="
-        background-color:#1c1c1c; 
-        padding:10px; 
-        border-radius:8px; 
-        margin-bottom:10px;
-    ">
-      <label style="font-size:13px; color: #ccc;">Área</label><br>
-      <span style="font-size:16px; color:white;">{usuario.get('Área', usuario.get('Area', 'No definido'))}</span>
+    <div class="block">
+      <label>Área</label><br>
+      <span>{usuario.get('Área', usuario.get('Area', 'No definido'))}</span>
     </div>
     """, unsafe_allow_html=True)
 
-    # Foto del usuario
+    # Foto del usuario (si existe en la hoja)
     if usuario.get("Foto"):
         st.image(usuario["Foto"], width=150)
 
 # Campo: Selección de tipo de registro
-st.markdown(f"""
-<div style="
-    background-color:#1c1c1c; 
-    padding:10px; 
-    border-radius:8px; 
-    margin-bottom:10px;
-">
-  <label style="font-size:13px; color: #ccc;">Tipo de registro</label>
-</div>
-""", unsafe_allow_html=True)
+st.markdown('<div class="block"><label>Tipo de registro</label></div>', unsafe_allow_html=True)
+tipo = st.selectbox("", ["Ingreso", "Salida"], key="tipo_registro", label_visibility="collapsed")
 
-tipo = st.selectbox("", ["Ingreso", "Salida"], key="tipo_registro")
 # Emoji dinámico según tipo
 emoji = "✅" if tipo == "Ingreso" else "❌"
 
@@ -117,15 +103,6 @@ if st.button(f"{emoji} Registrar {tipo}", key="btn_registro"):
         fecha
     ])
     st.success(f"Asistencia registrada para {nombre} - {tipo} a las {fecha}")
-
-
-
-
-
-
-
-
-
 
 
 
