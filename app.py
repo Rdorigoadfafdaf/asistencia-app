@@ -63,13 +63,35 @@ nombre = st.selectbox("Selecciona tu nombre", nombres, key="nombre", label_visib
 # Buscar datos del usuario seleccionado
 usuario = next((u for u in usuarios if u["Nombre"] == nombre), None)
 if usuario:
- if usuario:
-    st.text_input("Puesto", usuario.get("Puesto", "No definido"), key="puesto", disabled=True)
-    st.text_input("Área", usuario.get("Área", usuario.get("Area", "No definido")), key="area", disabled=True)
+    # Campo: Puesto (igual estilo que selectbox)
+    st.markdown(f"""
+    <div style="
+        background-color:#1c1c1c; 
+        padding:10px; 
+        border-radius:8px; 
+        margin-bottom:10px;
+    ">
+      <label style="font-size:13px; color:#ccc;">Puesto</label><br>
+      <div style="font-size:16px; color:white; padding:6px 0;">
+        {usuario.get('Puesto', 'No definido')}
+      </div>
+    </div>
+    """, unsafe_allow_html=True)
 
-    # Foto del usuario (si existe en la hoja)
-    if usuario.get("Foto"):
-        st.image(usuario["Foto"], width=150)
+    # Campo: Área (igual estilo que selectbox)
+    st.markdown(f"""
+    <div style="
+        background-color:#1c1c1c; 
+        padding:10px; 
+        border-radius:8px; 
+        margin-bottom:10px;
+    ">
+      <label style="font-size:13px; color:#ccc;">Área</label><br>
+      <div style="font-size:16px; color:white; padding:6px 0;">
+        {usuario.get('Área', usuario.get('Area', 'No definido'))}
+      </div>
+    </div>
+    """, unsafe_allow_html=True)
 
     # Foto del usuario (si existe en la hoja)
     if usuario.get("Foto"):
@@ -93,6 +115,7 @@ if st.button(f"{emoji} Registrar {tipo}", key="btn_registro"):
         fecha
     ])
     st.success(f"Asistencia registrada para {nombre} - {tipo} a las {fecha}")
+
 
 
 
