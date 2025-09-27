@@ -36,7 +36,7 @@ page_bg_img = """
 }
 </style>
 """
-# st.markdown(page_bg_img, unsafe_allow_html=True)
+st.markdown(page_bg_img, unsafe_allow_html=True)
 
 # 🔹 Interfaz
 st.title("📋 Registro de Asistencia")
@@ -67,6 +67,7 @@ if st.button("✅ Registrar asistencia", key="btn_registro"):
         fecha
     ])
     st.success(f"Asistencia registrada para {nombre} - {tipo} a las {fecha}")
+
 
 
 
