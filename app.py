@@ -4,10 +4,39 @@ from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
 import pytz
 
-# Solo buscamos datos si no está en el placeholder
-usuario = None
-if nombre != "Selecciona un nombre...":
-    usuario = next((u for u in usuarios if u["Nombre"] == nombre), None)
+# 🔹 Configuración de la página
+st.set_page_config(page_title="Registro de Asistencia", page_icon="📋", layout="centered")
+
+# 🔹 Fondo personalizado (foto de Imgur) y estilos
+page_bg_img = """
+<style>
+[data-testid="stAppViewContainer"] {
+    background-image: url("https://i.imgur.com/L1PTN4m.jpeg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+[data-testid="stHeader"] {
+    background: rgba(0,0,0,0);
+}
+.block {
+    background-color:#1c1c1c;
+    padding:10px;
+    border-radius:8px;
+    margin-bottom:10px;
+    font-size:16px;
+    color:white;
+}
+h1 {
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+}
+</style>
+"""
+st.markdown(page_bg_img, unsafe_allow_html=True)
+
+# 🔹 Título
+st.title("📋 Registro de Asistencia")
 
 # 🔹 Conexión con Google Sheets usando Secrets
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
@@ -23,24 +52,19 @@ sheet_usuarios = sheet.worksheet("Usuarios")       # pestaña con datos de usuar
 # Obtener usuarios
 usuarios = sheet_usuarios.get_all_records()
 nombres = [u["Nombre"] for u in usuarios]
-# --- Lista con placeholder ---
+
+# --- Placeholders ---
 opciones_nombre = ["Selecciona un nombre..."] + nombres
 opciones_tipo = ["Selecciona tipo de registro..."] + ["Ingreso", "Salida"]
 
 # Campo: Selección de nombre con foto al costado
 col1, col2 = st.columns([3, 1])
-
 with col1:
     st.markdown("**Selecciona tu nombre**", unsafe_allow_html=True)
-    nombre = st.selectbox(
-        "",
-        opciones_nombre,
-        key="nombre",
-        label_visibility="collapsed"
-    )
+    nombre = st.selectbox("", opciones_nombre, key="nombre", label_visibility="collapsed")
 
+usuario = None
 with col2:
-    usuario = None
     if nombre != "Selecciona un nombre...":
         usuario = next((u for u in usuarios if u["Nombre"] == nombre), None)
         if usuario and usuario.get("Foto"):
@@ -50,143 +74,27 @@ with col2:
 if usuario:
     st.markdown("**Puesto**", unsafe_allow_html=True)
     st.markdown(f"""
-    <div style="
-        background-color:#1c1c1c; 
-        padding:10px; 
-        border-radius:8px; 
-        margin-bottom:10px;
-        font-size:16px; 
-        color:white;
-    ">
+    <div class="block">
         {usuario.get('Puesto', 'No definido')}
     </div>
     """, unsafe_allow_html=True)
 
     st.markdown("**Área**", unsafe_allow_html=True)
     st.markdown(f"""
-    <div style="
-        background-color:#1c1c1c; 
-        padding:10px; 
-        border-radius:8px; 
-        margin-bottom:10px;
-        font-size:16px; 
-        color:white;
-    ">
+    <div class="block">
         {usuario.get('Área', usuario.get('Area', 'No definido'))}
     </div>
     """, unsafe_allow_html=True)
-
-# Campo: Selección de tipo de registro con placeholder
-st.markdown("**Tipo de registro**", unsafe_allow_html=True)
-tipo = st.selectbox(
-    "",
-    opciones_tipo,
-    key="tipo_registro",
-    label_visibility="collapsed"
-)
-
-# 🔹 Configuración de la página
-st.set_page_config(page_title="Registro de Asistencia", page_icon="📋", layout="centered")
-
-# 🔹 Fondo personalizado (foto de Imgur)
-page_bg_img = """
-<style>
-[data-testid="stAppViewContainer"] {
-    background-image: url("https://i.imgur.com/L1PTN4m.jpeg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-}
-[data-testid="stHeader"] {
-    background: rgba(0,0,0,0);
-}
-
-/* 🔹 Estilos globales para bloques de datos */
-.block {
-    background-color:#1c1c1c;
-    padding:10px;
-    border-radius:8px;
-    margin-bottom:10px;
-}
-.block label {
-    font-size:13px;
-    color:#ccc;
-}
-.block span {
-    font-size:16px;
-    color:white;
-}
-</style>
-"""
-st.markdown(page_bg_img, unsafe_allow_html=True)
-
-# 🔹 Interfaz
-st.title("📋 Registro de Asistencia")
-st.markdown("""
-<style>
-h1 {
-    color: white; /* o #FFD700, #FF8000, #0055FF */
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.8); /* sombra para contraste */
-}
-</style>
-""", unsafe_allow_html=True)
-
-# Campo: Selección de nombre con foto al costado
-col1, col2 = st.columns([3, 1])  # 3/4 espacio para el selectbox, 1/4 para la foto
-
-with col1:
-    st.markdown("**Selecciona tu nombre**", unsafe_allow_html=True)
-    nombre = st.selectbox("", nombres, key="nombre", label_visibility="collapsed")
-
-with col2:
-    usuario = next((u for u in usuarios if u["Nombre"] == nombre), None)
-    if usuario and usuario.get("Foto"):
-        st.image(usuario["Foto"], width=100)
-
-# Mostrar Puesto y Área debajo
-if usuario:
-    st.markdown("**Puesto**", unsafe_allow_html=True)
-    st.markdown(f"""
-    <div style="
-        background-color:#1c1c1c; 
-        padding:10px; 
-        border-radius:8px; 
-        margin-bottom:10px;
-        font-size:16px; 
-        color:white;
-    ">
-        {usuario.get('Puesto', 'No definido')}
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.markdown("**Área**", unsafe_allow_html=True)
-    st.markdown(f"""
-    <div style="
-        background-color:#1c1c1c; 
-        padding:10px; 
-        border-radius:8px; 
-        margin-bottom:10px;
-        font-size:16px; 
-        color:white;
-    ">
-        {usuario.get('Área', usuario.get('Area', 'No definido'))}
-    </div>
-    """, unsafe_allow_html=True)
-
-
 
 # Campo: Selección de tipo de registro
 st.markdown("**Tipo de registro**", unsafe_allow_html=True)
-tipo = st.selectbox("", ["Ingreso", "Salida"], key="tipo_registro", label_visibility="collapsed")
+tipo = st.selectbox("", opciones_tipo, key="tipo_registro", label_visibility="collapsed")
 
-# Emoji dinámico según tipo
-emoji = "✅" if tipo == "Ingreso" else "❌"
-
-# Botón Registrar (verde fijo con estilo)
-button_html = """
+# Botón Registrar (verde con estilo)
+button_css = """
 <style>
-.register-btn {
-    background-color: #28a745; /* verde tipo Bootstrap */
+div.stButton > button:first-child {
+    background-color: #28a745;
     color: white;
     font-size: 18px;
     font-weight: bold;
@@ -195,26 +103,29 @@ button_html = """
     border-radius: 8px;
     cursor: pointer;
     width: 100%;
-    text-align: center;
 }
-.register-btn:hover {
-    background-color: #218838; /* verde más oscuro al pasar el mouse */
+div.stButton > button:hover {
+    background-color: #218838;
+    color: white;
 }
 </style>
-
-<form action="#" method="post">
-    <button class="register-btn" type="submit">Registrar</button>
-</form>
 """
-st.markdown(button_html, unsafe_allow_html=True)
+st.markdown(button_css, unsafe_allow_html=True)
 
-
-
-
-
-
-
-
+if st.button("✅ Registrar"):
+    if nombre != "Selecciona un nombre..." and tipo != "Selecciona tipo de registro...":
+        tz = pytz.timezone("America/Lima")
+        fecha = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
+        sheet_asistencia.append_row([
+            nombre,
+            usuario.get("Puesto", ""),
+            usuario.get("Área", usuario.get("Area", "")),
+            tipo,
+            fecha
+        ])
+        st.success(f"Asistencia registrada para {nombre} - {tipo} a las {fecha}")
+    else:
+        st.error("⚠️ Debes seleccionar un nombre y un tipo de registro antes de continuar.")
 
 
 
