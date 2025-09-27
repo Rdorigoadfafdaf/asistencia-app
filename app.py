@@ -65,46 +65,18 @@ h1 {
 </style>
 """, unsafe_allow_html=True)
 
-# Campo: Selección de nombre
-st.markdown("**Selecciona tu nombre**", unsafe_allow_html=True)
-nombre = st.selectbox("", nombres, key="nombre", label_visibility="collapsed")
+# Campo: Selección de nombre con foto al costado
+col1, col2 = st.columns([3, 1])  # 3/4 espacio para el selectbox, 1/4 para la foto
 
-# Buscar datos del usuario seleccionado
-usuario = next((u for u in usuarios if u["Nombre"] == nombre), None)
-if usuario:
-    # Campo: Puesto (label arriba, valor en caja)
-    st.markdown("**Puesto**", unsafe_allow_html=True)
-    st.markdown(f"""
-    <div style="
-        background-color:#1c1c1c; 
-        padding:10px; 
-        border-radius:8px; 
-        margin-bottom:10px;
-        font-size:16px; 
-        color:white;
-    ">
-        {usuario.get('Puesto', 'No definido')}
-    </div>
-    """, unsafe_allow_html=True)
+with col1:
+    st.markdown("**Selecciona tu nombre**", unsafe_allow_html=True)
+    nombre = st.selectbox("", nombres, key="nombre", label_visibility="collapsed")
 
-    # Campo: Área (label arriba, valor en caja)
-    st.markdown("**Área**", unsafe_allow_html=True)
-    st.markdown(f"""
-    <div style="
-        background-color:#1c1c1c; 
-        padding:10px; 
-        border-radius:8px; 
-        margin-bottom:10px;
-        font-size:16px; 
-        color:white;
-    ">
-        {usuario.get('Área', usuario.get('Area', 'No definido'))}
-    </div>
-    """, unsafe_allow_html=True)
+with col2:
+    usuario = next((u for u in usuarios if u["Nombre"] == nombre), None)
+    if usuario and usuario.get("Foto"):
+        st.image(usuario["Foto"], width=100)
 
-    # Foto del usuario (si existe en la hoja)
-    if usuario.get("Foto"):
-        st.image(usuario["Foto"], width=150)
 
 # Campo: Selección de tipo de registro
 st.markdown("**Tipo de registro**", unsafe_allow_html=True)
@@ -138,6 +110,7 @@ button_html = """
 </form>
 """
 st.markdown(button_html, unsafe_allow_html=True)
+
 
 
 
