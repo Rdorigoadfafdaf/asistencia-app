@@ -16,7 +16,8 @@ st.set_page_config(page_title="Registro de Asistencia", page_icon="📋", layout
 # 🔹 Interfaz
 st.title("📋 Registro de Asistencia")
 
-nombre = st.text_input("👤 Nombre")
+nombres = ["Rodrigo Huamani", "Anibal Agustin", "Elmer Garcia", "Erick Vilca", "Jordan liceta","Ruben Andrade"]  # 👉 Aquí pones tu lista de personas
+nombre = st.selectbox("👤 Selecciona tu nombre", nombres)
 tipo = st.selectbox("🕒 Tipo de registro", ["Ingreso", "Salida"])
 
 if st.button("✅ Registrar asistencia"):
@@ -26,6 +27,7 @@ if st.button("✅ Registrar asistencia"):
         st.success(f"Asistencia registrada para {nombre} - {tipo} a las {fecha}")
     else:
         st.error("⚠️ Debes ingresar un nombre")
+
 
 
 
