@@ -17,7 +17,7 @@ st.set_page_config(page_title="Registro de Asistencia", page_icon="📋", layout
 page_bg_img = """
 <style>
 [data-testid="stAppViewContainer"] {
-    background-image: url("https://i.imgur.com/L1PTN4m.jpeg");
+    background-image: url("https://i.imgur.com/Zbz8oAQ.jpeg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -44,6 +44,7 @@ if st.button("✅ Registrar asistencia"):
         st.success(f"Asistencia registrada para {nombre} - {tipo} a las {fecha}")
     else:
         st.error("⚠️ Debes ingresar un nombre")
+
 
 
 
