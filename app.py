@@ -41,8 +41,18 @@ st.markdown(page_bg_img, unsafe_allow_html=True)
 # 🔹 Interfaz
 st.title("📋 Registro de Asistencia")
 
-# Selección de nombre
-nombre = st.selectbox("👤 Selecciona tu nombre", nombres, key="nombre")
+# Campo: Selección de nombre
+st.markdown(f"""
+<div style="
+    background-color:#1c1c1c; 
+    padding:10px; 
+    border-radius:8px; 
+    margin-bottom:10px;
+">
+  <label style="font-size:13px; color: #ccc;">Selecciona tu nombre</label>
+</div>
+""", unsafe_allow_html=True)
+nombre = st.selectbox("", nombres, key="nombre")
 
 # Buscar datos del usuario seleccionado
 usuario = next((u for u in usuarios if u["Nombre"] == nombre), None)
@@ -73,12 +83,22 @@ if usuario:
     </div>
     """, unsafe_allow_html=True)
 
-    # Foto del usuario (si existe en la hoja)
+    # Foto del usuario
     if usuario.get("Foto"):
         st.image(usuario["Foto"], width=150)
 
-# Selección de tipo de registro
-tipo = st.selectbox("🕒 Tipo de registro", ["Ingreso", "Salida"], key="tipo_registro")
+# Campo: Selección de tipo de registro
+st.markdown(f"""
+<div style="
+    background-color:#1c1c1c; 
+    padding:10px; 
+    border-radius:8px; 
+    margin-bottom:10px;
+">
+  <label style="font-size:13px; color: #ccc;">Tipo de registro</label>
+</div>
+""", unsafe_allow_html=True)
+tipo = st.selectbox("", ["Ingreso", "Salida"], key="tipo_registro")
 
 # Emoji dinámico según tipo
 emoji = "✅" if tipo == "Ingreso" else "❌"
@@ -95,7 +115,6 @@ if st.button(f"{emoji} Registrar {tipo}", key="btn_registro"):
         fecha
     ])
     st.success(f"Asistencia registrada para {nombre} - {tipo} a las {fecha}")
-
 
 
 
