@@ -77,6 +77,37 @@ with col2:
     if usuario and usuario.get("Foto"):
         st.image(usuario["Foto"], width=100)
 
+# Mostrar Puesto y Área debajo
+if usuario:
+    st.markdown("**Puesto**", unsafe_allow_html=True)
+    st.markdown(f"""
+    <div style="
+        background-color:#1c1c1c; 
+        padding:10px; 
+        border-radius:8px; 
+        margin-bottom:10px;
+        font-size:16px; 
+        color:white;
+    ">
+        {usuario.get('Puesto', 'No definido')}
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("**Área**", unsafe_allow_html=True)
+    st.markdown(f"""
+    <div style="
+        background-color:#1c1c1c; 
+        padding:10px; 
+        border-radius:8px; 
+        margin-bottom:10px;
+        font-size:16px; 
+        color:white;
+    ">
+        {usuario.get('Área', usuario.get('Area', 'No definido'))}
+    </div>
+    """, unsafe_allow_html=True)
+
+
 
 # Campo: Selección de tipo de registro
 st.markdown("**Tipo de registro**", unsafe_allow_html=True)
@@ -110,6 +141,7 @@ button_html = """
 </form>
 """
 st.markdown(button_html, unsafe_allow_html=True)
+
 
 
 
