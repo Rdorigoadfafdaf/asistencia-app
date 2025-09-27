@@ -63,33 +63,33 @@ nombre = st.selectbox("Selecciona tu nombre", nombres, key="nombre", label_visib
 # Buscar datos del usuario seleccionado
 usuario = next((u for u in usuarios if u["Nombre"] == nombre), None)
 if usuario:
-    # Campo: Puesto (igual estilo que selectbox)
+    # Campo: Puesto (label arriba, valor en caja)
+    st.markdown("**Puesto**", unsafe_allow_html=True)
     st.markdown(f"""
     <div style="
         background-color:#1c1c1c; 
         padding:10px; 
         border-radius:8px; 
         margin-bottom:10px;
+        font-size:16px; 
+        color:white;
     ">
-      <label style="font-size:13px; color:#ccc;">Puesto</label><br>
-      <div style="font-size:16px; color:white; padding:6px 0;">
         {usuario.get('Puesto', 'No definido')}
-      </div>
     </div>
     """, unsafe_allow_html=True)
 
-    # Campo: Área (igual estilo que selectbox)
+    # Campo: Área (label arriba, valor en caja)
+    st.markdown("**Área**", unsafe_allow_html=True)
     st.markdown(f"""
     <div style="
         background-color:#1c1c1c; 
         padding:10px; 
         border-radius:8px; 
         margin-bottom:10px;
+        font-size:16px; 
+        color:white;
     ">
-      <label style="font-size:13px; color:#ccc;">Área</label><br>
-      <div style="font-size:16px; color:white; padding:6px 0;">
         {usuario.get('Área', usuario.get('Area', 'No definido'))}
-      </div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -115,6 +115,7 @@ if st.button(f"{emoji} Registrar {tipo}", key="btn_registro"):
         fecha
     ])
     st.success(f"Asistencia registrada para {nombre} - {tipo} a las {fecha}")
+
 
 
 
