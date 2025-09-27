@@ -56,7 +56,7 @@ if usuario:
 tipo = st.selectbox("🕒 Tipo de registro", ["Ingreso", "Salida"], key="tipo_registro")
 
 # Botón registrar
-if st.button("✅ Registrar asistencia", key="btn_registro"):
+if st.button("✅ REGISTRAR", key="btn_registro"):
     tz = pytz.timezone("America/Lima")
     fecha = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
     sheet_asistencia.append_row([
@@ -67,6 +67,7 @@ if st.button("✅ Registrar asistencia", key="btn_registro"):
         fecha
     ])
     st.success(f"Asistencia registrada para {nombre} - {tipo} a las {fecha}")
+
 
 
 
