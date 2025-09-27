@@ -56,6 +56,14 @@ st.markdown(page_bg_img, unsafe_allow_html=True)
 
 # 🔹 Interfaz
 st.title("📋 Registro de Asistencia")
+st.markdown("""
+<style>
+h1 {
+    color: white; /* o #FFD700, #FF8000, #0055FF */
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8); /* sombra para contraste */
+}
+</style>
+""", unsafe_allow_html=True)
 
 # Campo: Selección de nombre
 st.markdown("**Selecciona tu nombre**", unsafe_allow_html=True)
@@ -117,6 +125,7 @@ if st.button(f"{emoji} Registrar {tipo}", key="btn_registro"):
         fecha
     ])
     st.success(f"Asistencia registrada para {nombre} - {tipo} a las {fecha}")
+
 
 
 
